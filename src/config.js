@@ -115,6 +115,7 @@ export const LANDMARKS = [
 
   { key: 'shengri',    
     name: '生日',  
+    file:'yanhu.png',
     dialogue: [
       {speaker: 'he', text:'宝宝，今天是你生日'},
       {speaker: 'she', text:'这个真忘不了'},
