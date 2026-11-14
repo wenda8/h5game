@@ -513,6 +513,7 @@ export default class WalkScene extends Phaser.Scene {
 
     // 地标放中间偏右
     this.landmark = this.add.image(cfg.width * 0.7, groundY, currentData.file).setOrigin(0.5, 1).setDepth(10);
+    this.landmark.setVisible(false); 
     if (currentData.scale) this.landmark.setScale(currentData.scale);
 
     // 人物初始位置
@@ -612,12 +613,13 @@ export default class WalkScene extends Phaser.Scene {
       this.he.setFlipX(true); 
       this.tweens.add({
         targets: this.he.sprite,
-        x: centerX + 200,
+        x: centerX + 240,
         duration: 2000,
         ease: 'Linear',
         onComplete: () => {
           this.she.setWalking(false);
           this.he.setWalking(false);
+          this.he.setFlipX(false);
           // 👇 进场结束，允许玩家点击开始互动
           this.isWaitingForTap = true;
           this.showHint('点击屏幕继续...');
@@ -639,7 +641,7 @@ export default class WalkScene extends Phaser.Scene {
     this.he.setFlipX(false);
     this.tweens.add({
       targets: this.he.sprite,
-      x: centerX + 200,
+      x: centerX + 240,
       duration: 1500,
       ease: 'Linear',
       onComplete: () => {
@@ -756,9 +758,69 @@ export default class WalkScene extends Phaser.Scene {
       duration: 2000,
       ease: 'Linear',
       onComplete: () => {
+        this.playWhiteFlashTransition();
         this.cameras.main.fadeOut(600, 0, 0, 0);
         this.cameras.main.once('camerafadeoutcomplete', () => {
           this.scene.restart({ index: this.landmarkIndex + 1 });
+        });
+      }
+    });
+  }
+
+  playWhiteFlashTransition() {
+    const { width, height } = this.scale;
+    
+    // 👇 核心判断：当前索引是不是等于地标总数减 1（即最后一幕）
+    const isLastScene = this.landmarkIndex === LANDMARKS.length - 1;
+
+    if (!isLastScene) {
+      // 如果【不是】最后一幕：正常黑屏过渡，直接切下一幕
+      this.cameras.main.fadeOut(600, 0, 0, 0);
+      this.cameras.main.once('camerafadeoutcomplete', () => {
+        this.scene.restart({ index: this.landmarkIndex + 1 });
+      });
+      return; // 结束方法，不执行下面的白屏代码
+    }
+
+    // 👇 如果是【最后一幕】：执行白屏闪烁特效
+  
+    // 1. 全屏白色矩形
+    const flash = this.add.rectangle(0, 0, width, height, 0xffffff)
+      .setOrigin(0).setDepth(10000).setAlpha(0);
+
+    // 2. 英文提示文字
+    const text = this.add.text(width / 2, height / 2 + 20, 'Our story will continue...', {
+      fontSize: '24px',
+      fontFamily: 'Arial, sans-serif',
+      color: '#333333',
+      fontStyle: 'italic',
+      align: 'center'
+    }).setOrigin(0.5).setDepth(10001).setAlpha(0);
+
+    // 3. 播放白屏闪烁
+    this.tweens.add({
+      targets: flash,
+      alpha: 1,
+      duration: 400, // 闪白耗时
+      ease: 'Cubic.easeOut',
+      onComplete: () => {
+        
+        // 4. 文字飘上来
+        this.tweens.add({
+          targets: text,
+          y: height / 2,
+          alpha: 1,
+          duration: 600,
+          ease: 'Power2.easeOut'
+        });
+
+        // 5. 停顿 2 秒后，再执行最后的黑屏，去展示结局画面
+        this.time.delayedCall(2000, () => {
+          this.cameras.main.fadeOut(800, 0, 0, 0);
+          this.cameras.main.once('camerafadeoutcomplete', () => {
+            // 进入最后一幕（即展示“旅途结束”的结算页）
+            this.scene.restart({ index: this.landmarkIndex + 1 });
+          });
         });
       }
     });
