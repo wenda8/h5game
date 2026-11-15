@@ -17,7 +17,7 @@ export const GAME_CONFIG = {
 
 export const LANDMARKS = [
   { 
-    key: 'xingji', 
+    key: 'xing', 
     file: 'xing.png', 
     bg: 'xing',
     name: '興记',     
