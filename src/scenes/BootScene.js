@@ -21,7 +21,7 @@ export default class BootScene extends Phaser.Scene {
     });
 
     this.load.image('bg2', 'assets/bg2.png');
-    this.load.image('xing', 'assets/xing.png');
+    this.load.image('xing', 'assets/xingji.png');
     this.load.image('dianyingyuan', 'assets/dianyingyuan.png');
     this.load.image('yanchanghui', 'assets/yanchanghui.png');
     this.load.image('dalilijiang', 'assets/dalilijiang.png');
