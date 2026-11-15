@@ -147,22 +147,22 @@ export default class BootScene extends Phaser.Scene {
     g.destroy();
   }
 
-  createLandmarkTexture(key, color) {
-    const w = 120;
-    const h = 160;
-    const g = this.make.graphics({ x: 0, y: 0, add: false });
+  // createLandmarkTexture(key, color) {
+  //   const w = 120;
+  //   const h = 160;
+  //   const g = this.make.graphics({ x: 0, y: 0, add: false });
 
-    g.fillStyle(color, 1);
-    g.fillRoundedRect(10, 30, w - 20, h - 30, 10);
-    g.fillStyle(0xffffff, 0.85);
-    g.fillRoundedRect(28, 60, 28, 34, 4);
-    g.fillRoundedRect(64, 60, 28, 34, 4);
-    g.fillRoundedRect(28, 108, 28, 34, 4);
-    g.fillRoundedRect(64, 108, 28, 34, 4);
-    g.fillStyle(0x333333, 0.9);
-    g.fillRoundedRect(46, 150, 28, 10, 4);
+  //   g.fillStyle(color, 1);
+  //   g.fillRoundedRect(10, 30, w - 20, h - 30, 10);
+  //   g.fillStyle(0xffffff, 0.85);
+  //   g.fillRoundedRect(28, 60, 28, 34, 4);
+  //   g.fillRoundedRect(64, 60, 28, 34, 4);
+  //   g.fillRoundedRect(28, 108, 28, 34, 4);
+  //   g.fillRoundedRect(64, 108, 28, 34, 4);
+  //   g.fillStyle(0x333333, 0.9);
+  //   g.fillRoundedRect(46, 150, 28, 10, 4);
 
-    g.generateTexture(key, w, h);
-    g.destroy();
-  }
+  //   g.generateTexture(key, w, h);
+  //   g.destroy();
+  // }
 }
