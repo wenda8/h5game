@@ -18,8 +18,8 @@ export const GAME_CONFIG = {
 export const LANDMARKS = [
   { 
     key: 'xingji', 
-    file: 'xingji.png', 
-    bg: 'xingji',
+    file: 'xing.png', 
+    bg: 'xing',
     name: '興记',     
     question: '我们第一次见面是在？', 
     options: ['1. 忘了', '2. 真忘了', '3. 興记'], 
