@@ -512,9 +512,9 @@ export default class WalkScene extends Phaser.Scene {
     this.cameras.main.fadeIn(600, 0, 0, 0);
 
     // 地标放中间偏右
-    this.landmark = this.add.image(cfg.width * 0.7, groundY, currentData.file).setOrigin(0.5, 1).setDepth(10);
-    this.landmark.setVisible(false); 
-    if (currentData.scale) this.landmark.setScale(currentData.scale);
+    // this.landmark = this.add.image(cfg.width * 0.7, groundY, currentData.file).setOrigin(0.5, 1).setDepth(10);
+    // this.landmark.setVisible(false); 
+    // if (currentData.scale) this.landmark.setScale(currentData.scale);
 
     // 人物初始位置
     this.she = new Hero(this, -250, groundY + 4, 'she');

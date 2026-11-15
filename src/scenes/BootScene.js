@@ -40,9 +40,9 @@ export default class BootScene extends Phaser.Scene {
     this.load.image('yanchanghuip1', 'assets/yanchanghuip1.jpg');
     this.load.image('jinanp1', 'assets/jinanp1.jpg');
 
-    LANDMARKS.forEach((lm) => {
-        this.load.image(lm.key, `assets/landmarks/${lm.file}`);
-    });
+    // LANDMARKS.forEach((lm) => {
+    //     this.load.image(lm.key, `assets/landmarks/${lm.file}`);
+    // });
   }
 
   create() {
