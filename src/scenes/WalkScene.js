@@ -657,36 +657,77 @@ export default class WalkScene extends Phaser.Scene {
   triggerInteraction(currentData, onCorrectCallback) {
     this.hideHint();
     this.isAnswering = true;
+    this.isWaitingForTap = false;
 
     if (currentData.dialogue) {
       this.he.setFlipX(false);
       this.dialogueUI.show(currentData.dialogue, () => {
-        if (currentData.dialogue) {
-          
-          if (currentData.photo) this.albumUI.addPhoto(currentData.photo);
-          if (currentData.question) {
-            this.time.delayedCall(300, () => {
-              this.showQuiz(currentData, onCorrectCallback);
+          if (currentData.photos && currentData.photos.length > 0) {
+            this.playPhotoSequence(currentData.photos, () => {
+              if (currentData.question) {
+                this.showQuiz(currentData, onCorrectCallback);
+              } else {
+                this.isAnswering = false;
+                this.isWaitingForTap = true;
+                this.showHint('点击屏幕继续...');
+              };
             });
-          }else{
+          } else if(currentData.question) {
+            this.showQuiz(currentData, onCorrectCallback);
+          } else {
             this.isAnswering = false;
             this.isWaitingForTap = true;
             this.showHint('点击屏幕继续...');
           }
-        }
-      });
-    } else if (currentData.question) {
+        });  
+    } else if (currentData.question){
       this.he.setFlipX(false);
       this.showQuiz(currentData, onCorrectCallback);
-    } else {
-      this.isAnswering = false;
-      // 没配题也没对话，直接允许点击离开
-      this.isWaitingForTap = true;
-      this.showHint('点击屏幕继续...');
+    }else{
+        this.isAnswering = false;
+        this.isWaitingForTap = true;
+        this.showHint('点击屏幕继续...');
+      }
     }
+
+  playPhotoSequence(photos, onComplete) {
+    if (!photos || photos.length === 0){
+      if (onComplete) onComplete();
+      return;
+    }
+
+    this.isAnswering = true;
+    if(this.she) this.she.setWalking(false);
+    if(this.he) this.he.setWalking(false);
+
+    this.time.delayedCall(300, () => {
+      this.showNextPhoto(photos, onComplete);
+    });
+  }
+
+  showNextPhoto(photos, onComplete){
+    const currentPhoto = photos[0];
+    const remainingPhotos = photos.slice(1);
+
+    this.albumUI.showFullscreenPhoto(currentPhoto, () => {
+      this.albumUI.addPhoto(currentPhoto, false);
+      
+      if (remainingPhotos.length > 0){
+        this.time.delayedCall(200, () => {
+          this.showNextPhoto(remainingPhotos, onComplete);
+        });
+      } else {
+        this.isAnswering = false;
+          this.isWaitingForTap = true;
+          this.showHint('点击屏幕继续...');
+        if (onComplete) {onComplete();}
+      }
+    });
   }
 
   showQuiz(currentData, onCorrectCallback) {
+    this.isAnswering = true;
+    this.isWaitingForTap = false;
     this.time.delayedCall(400, () => {
         this.quizUI.show(currentData, 
           (selectedidx) => {

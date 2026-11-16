@@ -34,13 +34,14 @@ export default class QuizUI {
     heBg.fillRoundedRect(-heBgWidth/2, -heBgHeight/2, heBgWidth, heBgHeight, 20);
     heBg.strokeRoundedRect(-heBgWidth/2, -heBgHeight/2, heBgWidth, heBgHeight, 20);
 
+
     const tailY = heBgHeight / 2;
     const tailX = heBgWidth*0.1;
     heBg.fillTriangle(tailX-15, tailY-5, tailX+15, tailY-5, tailX, tailY+25);
     heBg.strokeTriangle(tailX-15, tailY-5, tailX+15, tailY-5, tailX, tailY+25);
-
     heBg.fillStyle(0xffffff, 1);
-    heBg.fillRect(tailX-13, tailY-20, 26, 10);
+    heBg.fillRect(tailX-18, tailY-12, 35, 10);
+
     this.heBubble.add([heBg, heTxt]);
 
     //监听点击
@@ -62,7 +63,7 @@ export default class QuizUI {
     let maxOptionWidth = 0;
     const optionTexts = [];
     const lineHeight = 20;
-    const gap = 10;
+    const gap = 30;
 
     data.options.forEach((opt, idx) => {
       const tempTxt = this.scene.add.text(0,0,opt,{fontSize:'18px',color:'#333',wordWrap:{width:250}});
@@ -87,6 +88,8 @@ export default class QuizUI {
     const sheTtailX = -sheBgWidth*0.1;
     sheBg.fillTriangle(sheTtailX-15, sheTailY-5, sheTtailX+15, sheTailY-5, sheTtailX, sheTailY+25);
     sheBg.strokeTriangle(sheTtailX-15, sheTailY-5, sheTtailX+15, sheTailY-5, sheTtailX, sheTailY+25);
+    sheBg.fillStyle(0xfff0f5, 1);
+    sheBg.fillRect(sheTtailX-18, sheTailY-12, 35, 10);
     this.sheBubble.add(sheBg);
     
     
@@ -95,7 +98,7 @@ export default class QuizUI {
     data.options.forEach((opt, idx) => {
       const btnY = startY + idx * (lineHeight + gap);
 
-      const btnTxt = this.scene.add.text(-sheBgWidth/2+30, btnY, opt, {fontSize:'18px', fontStyle: 'bold',color:'#333',wordWrap:{width:250}, padding:{top:5, bottom:5}}).setOrigin(0, 0.5);
+      const btnTxt = this.scene.add.text(-sheBgWidth/2 + 30, btnY, opt, {fontSize:'18px', fontStyle: 'bold',color:'#333',wordWrap:{width:250}, padding:{top:5, bottom:5}}).setOrigin(0, 0.5);
 
       const hitArea = this.scene.add.rectangle(0, btnY, sheBgWidth-20, lineHeight, 0x000000, 0).setInteractive({useHandCursor:true});
       this.sheBubble.add([btnTxt, hitArea]);
@@ -165,7 +168,7 @@ export default class QuizUI {
     heBg.strokeTriangle(tailX-15, tailY-5, tailX+15, tailY-5, tailX, tailY+25);
 
     heBg.fillStyle(0xffffff, 1);
-    heBg.fillRect(tailX-13, tailY-20, 26, 10);
+    heBg.fillRect(tailX-18, tailY-12, 35, 10);
     this.heBubble.add([heBg, heTxt]);
 
     this.heBubble.setScale(0);

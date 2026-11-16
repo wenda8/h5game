@@ -1,7 +1,7 @@
 export const GAME_CONFIG = {
   // 画面尺寸
   width: 600,
-  height: 1100,         
+  height: 1080,         
   groundHeight: 40,
   walkSpeed: 180,
 
@@ -43,7 +43,7 @@ export const LANDMARKS = [
       {speaker: 'he', text:'我们看了演唱会'},
       {speaker: 'she', text:'哦对薛之谦'},
     ],
-    photo:'yanchanghuip1'
+    photos:['yanchanghuip1']
   },
   { key: 'jinan',    
     name: '济南',  
@@ -55,7 +55,7 @@ export const LANDMARKS = [
       {speaker: 'he', text:'我们在这看了教主专场'},
       {speaker: 'she', text:'这是济南么'},
     ],
-    photo:'jinanp1'
+    photos:['jinanp1']
   },
  
   { key: 'dalilijiang',    
@@ -71,7 +71,7 @@ export const LANDMARKS = [
     question: '我们什么时候在一起了？', 
     options: ['1. 嘿嘿忘了','2. 8月8号', '3. 8月7号吧'], 
     answer: 1,
-    photo:['dalip1','dalip2','dalip3', 'lijiangp1'],
+    photos:['dalip1','dalip2','dalip3', 'lijiangp1'],
   },
 
    { key: 'sias',    
@@ -80,9 +80,8 @@ export const LANDMARKS = [
     file:'sias.png',
     dialogue: [
       {speaker: 'he', text:'然后我们去看了看你的母校'},
+      {speaker: 'she', text:'从这感觉有印象了'},
       {speaker: 'she', text:'不错不错'},
-      {speaker: 'he', text:'我们在这看了教主专场'},
-      {speaker: 'she', text:'这是济南么'},
     ],
     //photo:'jinan'
   },
@@ -92,12 +91,12 @@ export const LANDMARKS = [
     bg: 'xuzhou', 
     file:'xuzhou.png',
     dialogue: [
-      {speaker: 'he', text:'我们还来过这'},
-      {speaker: 'she', text:'这又是哪'},
-      {speaker: 'he', text:'我们在这看了教主专场'},
-      {speaker: 'she', text:'这是济南么'},
+      {speaker: 'he', text:'我们十一的时候来了这'},
+      {speaker: 'she', text:'徐州'},
+      {speaker: 'he', text:'给你嘴都吃肿了'},
+      {speaker: 'she', text:'哪有'},
     ],
-    photo:['xuzhoup1','xuzhoup2']
+    photos:['xuzhoup1','xuzhoup2']
   },
 
   { key: 'yanhu',    
@@ -105,12 +104,10 @@ export const LANDMARKS = [
     bg: 'yanhu', 
     file:'yanhu.png',
     dialogue: [
-      {speaker: 'he', text:'我们还来过这'},
-      {speaker: 'she', text:'这又是哪'},
-      {speaker: 'he', text:'我们在这看了教主专场'},
-      {speaker: 'she', text:'这是济南么'},
+      {speaker: 'he', text:'之后我们又去了运城'},
+      {speaker: 'she', text:'臭水沟子'},
     ],
-    photo:'yanhup1'
+    photos:['yanhup1']
   },
 
   { key: 'shengri',    
@@ -121,14 +118,16 @@ export const LANDMARKS = [
       {speaker: 'she', text:'这个真忘不了'},
       {speaker: 'he', text:'祝你生日快乐'},
       {speaker: 'she', text:'一般吧'},
+      {speaker: 'he', text:'你想要什么生日礼物？'},
+      {speaker: 'she', text:'我想想...'},
     ],  
-    question: '你想要什么生日礼物？', 
-    options: ['1. 大比斗','2. Apple Watch', '3. AirPods'], 
+    question: '慢慢想...', 
+    options: ['1. 大比斗','2. 我看新出了个Apple Watch', '3. 我AirPods旧了'], 
     answer: [1, 2],
 
     followUp:{
       question: '还有呢？', 
-      options: ['1. 大比斗','2. Apple Watch', '3. AirPods'], 
+      options: ['1. 大比斗','2. 我看新出了个Apple Watch', '3. 我AirPods旧了'], 
       answer: [1, 2],
     }
    },

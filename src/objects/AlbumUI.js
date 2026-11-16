@@ -32,22 +32,66 @@ export default class AlbumUI {
   }
 
   // 收集照片的方法
-  addPhoto(photoKey) {
+  addPhoto(photoKey, showToast = true) {
     if (!this.collectedPhotos.includes(photoKey)) {
       this.collectedPhotos.push(photoKey);
       console.log('📸 收集到新照片:', photoKey);
       
       // 可选：弹出一个小提示“获得新照片”
-      const { width, height } = this.scene.scale;
-      const toast = this.scene.add.text(width / 2, height / 2, '📸 获得新照片！', {
+      if (showToast) {
+        const { width, height } = this.scene.scale;
+        const toast = this.scene.add.text(width / 2, height / 2, '📸 获得新照片！', {
         fontSize: '24px', color: '#fff', backgroundColor: '#000000aa', padding: { x: 20, y: 10 }
-      }).setOrigin(0.5).setDepth(10000);
-      
-      this.scene.tweens.add({
-        targets: toast, y: height / 2 - 50, alpha: 0,
-        duration: 1500, onComplete: () => toast.destroy()
-      });
+        }).setOrigin(0.5).setDepth(10000);
+        
+        this.scene.tweens.add({
+          targets: toast, y: height / 2 - 50, alpha: 0,
+          duration: 1500, onComplete: () => toast.destroy()
+        });
+      }
     }
+  }
+
+  showFullscreenPhoto(photoKey, onComplete) {
+    const { width, height } = this.scene.scale;
+    const mask = this.scene.add.rectangle(0, 0, width, height, 0x000000, 0.85).setOrigin(0).setDepth(10000).setInteractive({useHandCursor:true});
+    const frame = this.scene.add.rectangle(width/2, height/2,width*0.85, height*0.7, 0xffffff).setStrokeStyle(6, 0xdda0dd).setDepth(10001);
+
+    let img;
+    if (this.scene.textures.exists(photoKey)) {
+      img = this.scene.add.image(width/2, height/2,photoKey).setDepth(10002);
+      const scale = Math.min((width*0.8)/img.width, (height*0.65)/img.height);
+      img.setScale(scale);
+    } else  {
+      img = this.scene.add.image(width/2, height/2,photoKey, ).setOrigin(0.5).setDepth(10002);
+    }
+
+    const tip = this.scene.add.text(width/2, height*0.9, '点击继续', {
+      fontSize:'18px', color:'#fff', alpha:0.7
+    }).setOrigin(0.5).setDepth(10002);
+
+    const fullscreenContainer = this.scene.add.container(0,0).setDepth(10000);
+    fullscreenContainer.add([mask, frame, img, tip]);
+    fullscreenContainer.setScale(0);
+
+    this.scene.tweens.add({
+      targets:fullscreenContainer,
+      scale:1,
+      duration:400,
+      ease: 'Back.easeOut'
+    });
+
+    mask.on('pointerdown', () => {
+      this.scene.tweens.add({
+        targets: fullscreenContainer,
+        scale: 0 ,
+        duration: 200,
+        onComplete: () => {
+          fullscreenContainer.destroy();
+          if (onComplete) onComplete();
+        } 
+      });
+    });
   }
 
   // 打开相册
@@ -59,6 +103,7 @@ export default class AlbumUI {
 
     // 1. 全屏黑色遮罩 (层级 9998)
     const mask = this.scene.add.rectangle(0, 0, width, height, 0x000000, 0.85).setOrigin(0).setDepth(9998).setInteractive();
+
     
     // 2. 容器
     this.albumContainer = this.scene.add.container(0, 0).setDepth(9999);
@@ -68,7 +113,9 @@ export default class AlbumUI {
     const closeBtn = this.scene.add.text(width - 40, 40, '❌', { fontSize: '30px' })
       .setOrigin(0.5).setInteractive({ useHandCursor: true });
     
-    closeBtn.on('pointerdown', () => this.closeAlbum());
+    closeBtn.on('pointerdown', () => {
+      this.closeAlbum();
+    });
 
     // 4. 标题
     const title = this.scene.add.text(width / 2, 60, '回忆相册', { 
@@ -99,7 +146,8 @@ export default class AlbumUI {
       const y = startY + row * gapY;
 
       // 照片相框
-      const frame = this.scene.add.rectangle(x, y, 140, 100, 0xffffff).setStrokeStyle(4, 0xdda0dd);
+      const frame = this.scene.add.rectangle(x, y, 140, 100, 0xffffff).setStrokeStyle(4, 0xdda0dd).setInteractive({useHandCursor: true});
+      
       
       // 如果你在 BootScene 加载了真实图片：
       let img;
@@ -110,6 +158,9 @@ export default class AlbumUI {
         img = this.scene.add.text(x, y, `[照片]\n${photoKey}`, { fontSize: '14px', color: '#333', align: 'center' }).setOrigin(0.5);
       }
 
+      frame.on ('pointerdown', () => {
+        this.showFullscreenPhoto(photoKey);
+      });
       this.albumContainer.add([frame, img]);
     });
   }
