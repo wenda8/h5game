@@ -10,6 +10,10 @@ export default class BootScene extends Phaser.Scene {
       .text(300, 225, 'loading…', { fontSize: '24px', color: '#333' })
       .setOrigin(1.5);
 
+    this.load.on('loaderror', (file) => {
+      console.error('❌ 资源加载失败:', file.src);
+    });
+
     this.load.spritesheet('she','assets/shewalk.png', {
       frameWidth: 700,
       frameHeight: 1024,
