@@ -492,6 +492,43 @@ export default class WalkScene extends Phaser.Scene {
     const groundY = cfg.height - cfg.groundHeight;
 
     const currentData = LANDMARKS[this.landmarkIndex];
+
+    // 👇 核心修改：判断是不是最后一幕
+    // ==========================================
+    const isFinalScene = (this.landmarkIndex === LANDMARKS.length - 1);
+
+    if (isFinalScene) {
+      // 【终幕模式】：直接铺满背景图，不走入场和退场
+      this.cameras.main.setBackgroundColor('#000000');
+      this.add.image(cfg.width / 2, cfg.height / 2, currentData.bg || 'canting')
+        .setDisplaySize(cfg.width, cfg.height)
+        .setDepth(-10);
+
+      // 依然保留右上角相册 UI
+      this.albumUI = new AlbumUI(this);
+      this.quizUI = new QuizUI(this);
+      this.dialogueUI = new DialogueUI(this);
+      this.isAnswering = false;
+
+      this.cameras.main.fadeIn(1000, 0, 0, 0);
+
+      // 停顿 1 秒后，直接触发对话或问答（不需要点击开启）
+      this.time.delayedCall(1000, () => {
+        // 我们把当前数据和答对后的回调传进去
+        this.triggerInteraction(currentData, () => {
+          // 👇 终幕答对后的逻辑：不走路了，直接显示“全剧终”
+          this.isAnswering = true;
+          this.cameras.main.fadeOut(2000, 0, 0, 0); // 缓缓黑屏
+          this.cameras.main.once('camerafadeoutcomplete', () => {
+            this.showGameEnd();
+          });
+        });
+      });
+      
+      return; // 👈 直接 return，不往下执行走路的代码了
+    }
+
+
     let bgKey = (currentData && currentData.bg) ? currentData.bg : 'bg'; 
 
     // 背景和地面
@@ -685,8 +722,11 @@ export default class WalkScene extends Phaser.Scene {
       this.showQuiz(currentData, onCorrectCallback);
     }else{
         this.isAnswering = false;
-        this.isWaitingForTap = true;
-        this.showHint('点击屏幕继续...');
+        if (onCorrectCallback) onCorrectCallback(); // 如果传了回调（终幕），就执行回调
+        else {
+          this.isWaitingForTap = true;
+          this.showHint('to be continue...');
+        }
       }
     }
 
@@ -867,11 +907,44 @@ export default class WalkScene extends Phaser.Scene {
     });
   }
 
-  showGameEnd() {
+  
+    showGameEnd() {
+    // 画面渐亮
     this.cameras.main.fadeIn(1000, 0, 0, 0);
     const { width, height } = this.scale;
-    this.add.text(width / 2, height / 2, '旅途结束\n感谢游玩！', {
+
+    // 1. 显示“旅途结束”文字
+    this.add.text(width / 2, height / 2, 'Our story will continue...', {
       fontSize: '32px', color: '#fff', align: 'center', backgroundColor: '#000000aa', padding: { x: 20, y: 20 }
     }).setOrigin(0.5).setDepth(10000);
+
+    // ==========================================
+    // 2. 添加左上角“返回键”
+    // ==========================================
+    // 按钮背景（让按钮显眼一点，也可以用纯文字）
+    const backBtnBg = this.add.rectangle(50, 50, 80, 40, 0x000000, 0.6)
+      .setStrokeStyle(2, 0xffffff)
+      .setInteractive({ useHandCursor: true })
+      .setDepth(10000);
+
+    // 按钮文字
+    const backBtnTxt = this.add.text(50, 50, '返回', {
+      fontSize: '18px', color: '#ffffff', fontStyle: 'bold'
+    }).setOrigin(0.5).setDepth(10001);
+
+    // 👇 点击返回键的逻辑
+    backBtnBg.on('pointerdown', () => {
+      // 1. 清空全局相册数据，重置进度
+      GameStore.photos = []; 
+      console.log('🔄 玩家点击返回，游戏重置');
+
+      // 2. 黑屏过渡，避免画面瞬间切换太突兀
+      this.cameras.main.fadeOut(500, 0, 0, 0);
+      this.cameras.main.once('camerafadeoutcomplete', () => {
+        // 3. 回到开场剧情（IntroScene）
+        // 如果你想直接回到第一幕走路，就改成 this.scene.start('WalkScene', { index: 0 });
+        this.scene.start('IntroScene'); 
+      });
+    });
   }
 }
