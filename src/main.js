@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { GAME_CONFIG } from './config.js';
 import BootScene from './scenes/BootScene.js';
 import WalkScene from './scenes/WalkScene.js';
+import IntroScene from './scenes/IntroScene.js';
 
 const config = {
   type: Phaser.AUTO,
@@ -15,7 +16,7 @@ const config = {
     width: GAME_CONFIG.width,
     height: GAME_CONFIG.height,
   },
-  scene: [BootScene, WalkScene],
+  scene: [BootScene, IntroScene, WalkScene],
 };
 
 new Phaser.Game(config);

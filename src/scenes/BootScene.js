@@ -20,6 +20,8 @@ export default class BootScene extends Phaser.Scene {
       frameHeight: 1024,
     });
 
+    this.load.image('head-she', 'assets/head-she.png');
+    this.load.image('head-he', 'assets/head-he.png');
     this.load.image('bg2', 'assets/bg2.png');
     this.load.image('xing', 'assets/xing.png');
     this.load.image('dianyingyuan', 'assets/dianyingyuan.png');
@@ -48,6 +50,7 @@ export default class BootScene extends Phaser.Scene {
   create() {
     // this.createHeroTexture();
     this.createGroundTexture();
+    
     // LANDMARKS.forEach((lm) => this.createLandmarkTexture(lm.key, lm.color));
     
     if (!this.anims.exists('she-walk')) {
@@ -81,7 +84,8 @@ export default class BootScene extends Phaser.Scene {
         repeat: -1,
       });
 
-    this.scene.start('WalkScene');
+    this.scene.start('IntroScene'); 
+    // this.scene.start('WalkScene');
   }
 
   /**

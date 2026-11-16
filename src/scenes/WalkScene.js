@@ -535,7 +535,7 @@ export default class WalkScene extends Phaser.Scene {
     // 延迟 0.5 秒，防止上一幕结束时的点击穿透
     this.time.delayedCall(500, () => {
       this.isWaitingForTap = true;
-      this.showHint('点击屏幕开始');
+      this.showHint('点击屏幕继续...');
     });
 
     // 绑定场景点击事件
