@@ -48,7 +48,11 @@ export default class DialogueUI {
             const tailY = bgH / 2;
             const tailX = bgW*0.1;
             bg.fillTriangle(-15, tailY-5, 15, tailY-5, 0, tailY+20);
-            
+            // bg.strokeTriangle(-15, tailY-5, 15, tailY-5, 0, tailY+20);
+            // bg.fillStyle(0xffffff, 1);
+            // bg.fillRect(tailX-18, tailY-12, 35, 10);
+
+
             const bubble = this.scene.add.container(xPos, yPos, [bg, txt]);
             bubbleContainer.add(bubble);
 

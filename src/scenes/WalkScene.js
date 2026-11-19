@@ -839,7 +839,7 @@ export default class WalkScene extends Phaser.Scene {
       duration: 2000,
       ease: 'Linear',
       onComplete: () => {
-        this.playWhiteFlashTransition();
+        //this.showGameEnd();
         this.cameras.main.fadeOut(600, 0, 0, 0);
         this.cameras.main.once('camerafadeoutcomplete', () => {
           this.scene.restart({ index: this.landmarkIndex + 1 });
@@ -848,101 +848,134 @@ export default class WalkScene extends Phaser.Scene {
     });
   }
 
-  playWhiteFlashTransition() {
-    const { width, height } = this.scale;
+  // playWhiteFlashTransition() {
+  //   const { width, height } = this.scale;
     
-    // 👇 核心判断：当前索引是不是等于地标总数减 1（即最后一幕）
-    const isLastScene = this.landmarkIndex === LANDMARKS.length - 1;
+  //   // 👇 核心判断：当前索引是不是等于地标总数减 1（即最后一幕）
+  //   const isLastScene = this.landmarkIndex === LANDMARKS.length - 1;
 
-    if (!isLastScene) {
-      // 如果【不是】最后一幕：正常黑屏过渡，直接切下一幕
-      this.cameras.main.fadeOut(600, 0, 0, 0);
-      this.cameras.main.once('camerafadeoutcomplete', () => {
-        this.scene.restart({ index: this.landmarkIndex + 1 });
-      });
-      return; // 结束方法，不执行下面的白屏代码
-    }
+  //   if (!isLastScene) {
+  //     // 如果【不是】最后一幕：正常黑屏过渡，直接切下一幕
+  //     this.cameras.main.fadeOut(600, 0, 0, 0);
+  //     this.cameras.main.once('camerafadeoutcomplete', () => {
+  //       this.scene.restart({ index: this.landmarkIndex + 1 });
+  //     });
+  //     return; // 结束方法，不执行下面的白屏代码
+  //   }
 
-    // 👇 如果是【最后一幕】：执行白屏闪烁特效
+  //   // 👇 如果是【最后一幕】：执行白屏闪烁特效
   
-    // 1. 全屏白色矩形
-    const flash = this.add.rectangle(0, 0, width, height, 0xffffff)
-      .setOrigin(0).setDepth(10000).setAlpha(0);
+  //   // 1. 全屏白色矩形
+  //   const flash = this.add.rectangle(0, 0, width, height, 0xffffff)
+  //     .setOrigin(0).setDepth(10000).setAlpha(0);
 
-    // 2. 英文提示文字
-    const text = this.add.text(width / 2, height / 2 + 20, 'Our story will continue...', {
-      fontSize: '24px',
-      fontFamily: 'Arial, sans-serif',
-      color: '#333333',
-      fontStyle: 'italic',
-      align: 'center'
-    }).setOrigin(0.5).setDepth(10001).setAlpha(0);
+  //   // 2. 英文提示文字
+  //   const text = this.add.text(width / 2, height / 2 + 20, 'Our story will continue...', {
+  //     fontSize: '24px',
+  //     fontFamily: 'Arial, sans-serif',
+  //     color: '#333333',
+  //     fontStyle: 'italic',
+  //     align: 'center'
+  //   }).setOrigin(0.5).setDepth(10001).setAlpha(0);
 
-    // 3. 播放白屏闪烁
-    this.tweens.add({
-      targets: flash,
-      alpha: 1,
-      duration: 400, // 闪白耗时
-      ease: 'Cubic.easeOut',
-      onComplete: () => {
+  //   // 3. 播放白屏闪烁
+  //   this.tweens.add({
+  //     targets: flash,
+  //     alpha: 1,
+  //     duration: 400, // 闪白耗时
+  //     ease: 'Cubic.easeOut',
+  //     onComplete: () => {
         
-        // 4. 文字飘上来
-        this.tweens.add({
-          targets: text,
-          y: height / 2,
-          alpha: 1,
-          duration: 600,
-          ease: 'Power2.easeOut'
-        });
+  //       // 4. 文字飘上来
+  //       this.tweens.add({
+  //         targets: text,
+  //         y: height / 2,
+  //         alpha: 1,
+  //         duration: 600,
+  //         ease: 'Power2.easeOut'
+  //       });
 
-        // 5. 停顿 2 秒后，再执行最后的黑屏，去展示结局画面
-        this.time.delayedCall(2000, () => {
-          this.cameras.main.fadeOut(800, 0, 0, 0);
-          this.cameras.main.once('camerafadeoutcomplete', () => {
-            // 进入最后一幕（即展示“旅途结束”的结算页）
-            this.scene.restart({ index: this.landmarkIndex + 1 });
-          });
-        });
-      }
-    });
-  }
+  //       // 5. 停顿 2 秒后，再执行最后的黑屏，去展示结局画面
+  //       this.time.delayedCall(2000, () => {
+  //         this.cameras.main.fadeOut(800, 0, 0, 0);
+  //         this.cameras.main.once('camerafadeoutcomplete', () => {
+  //           // 进入最后一幕（即展示“旅途结束”的结算页）
+  //           this.scene.restart({ index: this.landmarkIndex + 1 });
+  //         });
+  //       });
+  //     }
+  //   });
+  // }
 
   
-    showGameEnd() {
-    // 画面渐亮
-    this.cameras.main.fadeIn(1000, 0, 0, 0);
-    const { width, height } = this.scale;
+  //   showGameEnd() {
+  //   // 画面渐亮
+  //   this.cameras.main.fadeIn(1000, 0, 0, 0);
+  //   const { width, height } = this.scale;
 
-    // 1. 显示“旅途结束”文字
+  //   // 1. 显示“旅途结束”文字
+  //   this.add.text(width / 2, height / 2, 'Our story will continue...', {
+  //     fontSize: '32px', color: '#fff', align: 'center', backgroundColor: '#000000aa', padding: { x: 20, y: 20 }
+  //   }).setOrigin(0.5).setDepth(10000);
+
+  //   // ==========================================
+  //   // 2. 添加左上角“返回键”
+  //   // ==========================================
+  //   // 按钮背景（让按钮显眼一点，也可以用纯文字）
+  //   const backBtnBg = this.add.rectangle(50, 50, 80, 40, 0x000000, 0.6)
+  //     .setStrokeStyle(2, 0xffffff)
+  //     .setInteractive({ useHandCursor: true })
+  //     .setDepth(10000);
+
+  //   // 按钮文字
+  //   const backBtnTxt = this.add.text(50, 50, '◀返回', {
+  //     fontSize: '18px', color: '#ffffff', fontStyle: 'bold'
+  //   }).setOrigin(0.5).setDepth(10001);
+
+  //   // 👇 点击返回键的逻辑
+  //   backBtnBg.on('pointerdown', () => {
+  //     // 1. 清空全局相册数据，重置进度
+  //     GameStore.photos = []; 
+  //     console.log('🔄 玩家点击返回，游戏重置');
+
+  //     // 2. 黑屏过渡，避免画面瞬间切换太突兀
+  //     this.cameras.main.fadeOut(500, 0, 0, 0);
+  //     this.cameras.main.once('camerafadeoutcomplete', () => {
+  //       // 3. 回到开场剧情（IntroScene）
+  //       this.scene.start('IntroScene'); 
+  //     });
+  //   });
+  // }
+
+  showGameEnd() {
+    // 已经黑屏了，直接淡入文字
+    this.cameras.main.fadeIn(800, 0, 0, 0);
+    const { width, height } = this.scale;
+    this.add.rectangle(0, 0, width, height, 0x000000).setOrigin(0);
+
+    this.cameras.main.fadeIn(800, 0, 0, 0);
+    // 1. 显示结局文字
     this.add.text(width / 2, height / 2, 'Our story will continue...', {
       fontSize: '32px', color: '#fff', align: 'center', backgroundColor: '#000000aa', padding: { x: 20, y: 20 }
-    }).setOrigin(0.5).setDepth(10000);
+    }).setOrigin(0.5).setDepth(9980);
 
     // ==========================================
     // 2. 添加左上角“返回键”
     // ==========================================
-    // 按钮背景（让按钮显眼一点，也可以用纯文字）
     const backBtnBg = this.add.rectangle(50, 50, 80, 40, 0x000000, 0.6)
       .setStrokeStyle(2, 0xffffff)
       .setInteractive({ useHandCursor: true })
       .setDepth(10000);
 
-    // 按钮文字
-    const backBtnTxt = this.add.text(50, 50, '返回', {
+    const backBtnTxt = this.add.text(50, 50, '◀返回', {
       fontSize: '18px', color: '#ffffff', fontStyle: 'bold'
     }).setOrigin(0.5).setDepth(10001);
 
-    // 👇 点击返回键的逻辑
     backBtnBg.on('pointerdown', () => {
-      // 1. 清空全局相册数据，重置进度
       GameStore.photos = []; 
       console.log('🔄 玩家点击返回，游戏重置');
-
-      // 2. 黑屏过渡，避免画面瞬间切换太突兀
       this.cameras.main.fadeOut(500, 0, 0, 0);
       this.cameras.main.once('camerafadeoutcomplete', () => {
-        // 3. 回到开场剧情（IntroScene）
-        // 如果你想直接回到第一幕走路，就改成 this.scene.start('WalkScene', { index: 0 });
         this.scene.start('IntroScene'); 
       });
     });

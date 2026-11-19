@@ -1,7 +1,7 @@
 export const GAME_CONFIG = {
   // 画面尺寸
   width: 600,
-  height: 1080,         
+  height: 1000,         
   groundHeight: 40,
   walkSpeed: 180,
 

@@ -7,7 +7,7 @@ export default class BootScene extends Phaser.Scene {
 
   preload() {
     this.add
-      .text(300, 225, 'loading…', { fontSize: '24px', color: '#333' })
+      .text(300, 225, 'loading…', { fontSize: '24px', color: '#ffffff' })
       .setOrigin(1.5);
 
     this.load.on('loaderror', (file) => {

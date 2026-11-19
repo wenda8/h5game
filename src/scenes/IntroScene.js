@@ -48,7 +48,7 @@ export default class IntroScene extends Phaser.Scene {
 
     // 提示文字
     this.hintText = this.add.text(width - 30, height - 30, '▼ 点击继续', {
-      fontSize: '16px', color: '#aaaaaa'
+      fontSize: '16px', color: '#aaaaaa', padding: { top: 10, bottom: 10, left: 10, right: 10 } 
     }).setOrigin(1, 1);
     
     // 呼吸闪烁动画
@@ -59,11 +59,11 @@ export default class IntroScene extends Phaser.Scene {
     // ==========================================
     // 女生在左边
     this.sheHead = this.add.image(80, boxY - 55, 'head-she').setDisplaySize(100, 100);
-    this.add.rectangle(80, boxY - 40, 104, 113).setStrokeStyle(2, 0xdda0dd); // 紫色边框
+    // this.add.rectangle(80, boxY - 40, 104, 113).setStrokeStyle(2, 0xdda0dd); // 紫色边框
     
     // 男生在右边
     this.heHead = this.add.image(width - 80, boxY - 55, 'head-he').setDisplaySize(100, 100);
-    this.add.rectangle(width - 80, boxY - 40, 104, 113).setStrokeStyle(2, 0xffffff); // 蓝色边框
+    //this.add.rectangle(width - 80, boxY - 40, 104, 113).setStrokeStyle(2, 0xffffff); // 蓝色边框
 
     // 默认两人头像都是灰色（谁说话谁变亮）
     this.sheHead.setTint(0x555555);
@@ -95,12 +95,12 @@ export default class IntroScene extends Phaser.Scene {
     // 女生暗粉色
     this.shenameBg.setFillStyle(0x8b5a76); 
     this.shenameText.setText('');
-    this.shenameBg.setStrokeStyle(2, 0x555555); // 边框也暗一点
+    //this.shenameBg.setStrokeStyle(2, 0x555555); // 边框也暗一点
     
     // 男生暗蓝色
     this.henameBg.setFillStyle(0x2b4566); 
     this.henameText.setText('');
-    this.henameBg.setStrokeStyle(2, 0x555555); // 边框也暗一点
+    //this.henameBg.setStrokeStyle(2, 0x555555); // 边框也暗一点
 
     // 根据谁说话，更新名字、颜色、头像亮度
     if (current.speaker === 'he') {

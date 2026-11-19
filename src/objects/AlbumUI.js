@@ -55,7 +55,7 @@ export default class AlbumUI {
   showFullscreenPhoto(photoKey, onComplete) {
     const { width, height } = this.scene.scale;
     const mask = this.scene.add.rectangle(0, 0, width, height, 0x000000, 0.85).setOrigin(0).setDepth(10000).setInteractive({useHandCursor:true});
-    const frame = this.scene.add.rectangle(width/2, height/2,width*0.85, height*0.7, 0xffffff).setStrokeStyle(6, 0xdda0dd).setDepth(10001);
+    // const frame = this.scene.add.rectangle(width/2, height/2,width*0.85, height*0.7, 0xffffff).setStrokeStyle(6, 0xffffff).setDepth(10001);
 
     let img;
     if (this.scene.textures.exists(photoKey)) {
@@ -71,7 +71,7 @@ export default class AlbumUI {
     }).setOrigin(0.5).setDepth(10002);
 
     const fullscreenContainer = this.scene.add.container(0,0).setDepth(10000);
-    fullscreenContainer.add([mask, frame, img, tip]);
+    fullscreenContainer.add([mask,  img, tip]); //frame,
     fullscreenContainer.setScale(0);
 
     this.scene.tweens.add({
@@ -146,7 +146,7 @@ export default class AlbumUI {
       const y = startY + row * gapY;
 
       // 照片相框
-      const frame = this.scene.add.rectangle(x, y, 140, 100, 0xffffff).setStrokeStyle(4, 0xdda0dd).setInteractive({useHandCursor: true});
+      const frame = this.scene.add.rectangle(x, y, 140, 100, 0xffffff).setStrokeStyle(2, 0xffffff).setInteractive({useHandCursor: true});
       
       
       // 如果你在 BootScene 加载了真实图片：
